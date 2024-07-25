@@ -1,5 +1,9 @@
 #include "systemcalls.h"
 
+#include <sys/wait.h>
+#include <unistd.h>
+#include <stdlib.h>
+
 /**
  * @param cmd the command to execute with system()
  * @return true if the command in @param cmd was executed
@@ -43,12 +47,9 @@ bool do_exec(int count, ...)
         command[i] = va_arg(args, char *);
     }
     command[count] = NULL;
-    // this line is to avoid a compile warning before your implementation is complete
-    // and may be removed
-    command[count] = command[count];
+    va_end(args);
 
     /*
-     * TODO:
      *   Execute a system command by calling fork, execv(),
      *   and wait instead of system (see LSP page 161).
      *   Use the command[0] as the full path to the command to execute
@@ -57,9 +58,34 @@ bool do_exec(int count, ...)
      *
      */
 
-    va_end(args);
+    pid_t pid = fork();
+    if (pid == -1)
+    {
+        return false;
+    }
 
-    return true;
+    if (pid == 0)
+    {
+        // child process (which must be noreturn)
+
+        if (execv(command[0], command + 1) == -1)
+        {
+            // Error occurred on execv: exit the program with an error
+            exit(EXIT_FAILURE);
+        }
+        // else, never returns
+    }
+
+    // parent process
+
+    int status;
+
+    if (waitpid(pid, &status, 0) == -1)
+    {
+        return false;
+    }
+
+    return WEXITSTATUS(status) == EXIT_SUCCESS;
 }
 
 /**
