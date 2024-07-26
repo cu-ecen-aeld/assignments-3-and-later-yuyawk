@@ -69,7 +69,7 @@ bool do_exec(int count, ...)
     {
         // child process (which must be noreturn)
 
-        if (execv(command[0], command + 1) == -1)
+        if (execv(command[0], command) == -1)
         {
             // Error occurred on execv: exit the program with an error
             exit(EXIT_FAILURE);
@@ -138,7 +138,7 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
         }
         close(fd);
 
-        if (execv(command[0], command + 1) == -1)
+        if (execv(command[0], command) == -1)
         {
             // Error occurred on execv: exit the program with an error
             exit(EXIT_FAILURE);
