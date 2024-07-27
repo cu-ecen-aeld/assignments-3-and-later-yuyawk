@@ -85,7 +85,12 @@ echo "Library dependencies"
 ${CROSS_COMPILE}readelf -a "${OUTDIR}/rootfs/bin/busybox" | grep "program interpreter"
 ${CROSS_COMPILE}readelf -a "${OUTDIR}/rootfs/bin/busybox" | grep "Shared library"
 
-# TODO: Add library dependencies to rootfs
+# Add library dependencies to rootfs
+CROSS_COMPILE_SYSROOT="$("${CROSS_COMPILE}gcc" -print-sysroot)"
+cp "${CROSS_COMPILE_SYSROOT}/lib/ld-linux-aarch64.so.1" "${OUTDIR}/rootfs/lib"
+cp "${CROSS_COMPILE_SYSROOT}/lib64/libm.so.6" "${OUTDIR}/rootfs/lib64"
+cp "${CROSS_COMPILE_SYSROOT}/lib64/libresolv.so.2" "${OUTDIR}/rootfs/lib64"
+cp "${CROSS_COMPILE_SYSROOT}/lib64/libc.so.6" "${OUTDIR}/rootfs/lib64"
 
 # TODO: Make device nodes
 
