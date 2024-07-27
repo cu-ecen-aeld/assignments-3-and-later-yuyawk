@@ -16,8 +16,7 @@ FINDER_APP_DIR="$(realpath "$(dirname $0)")"
 ARCH=arm64
 CROSS_COMPILE=aarch64-none-linux-gnu-
 
-if [ $# -lt 1 ]
-then
+if [ $# -lt 1 ]; then
 	echo "Using default directory ${OUTDIR} for output"
 else
 	OUTDIR="$(realpath "$1")"
@@ -47,8 +46,7 @@ echo "Adding the Image in outdir"
 
 echo "Creating the staging directory for the root filesystem"
 cd "${OUTDIR}"
-if [ -d "${OUTDIR}/rootfs" ]
-then
+if [ -d "${OUTDIR}/rootfs" ]; then
 	echo "Deleting rootfs directory at ${OUTDIR}/rootfs and starting over"
     sudo rm  -rf "${OUTDIR}/rootfs"
 fi
@@ -56,9 +54,8 @@ fi
 # TODO: Create necessary base directories
 
 cd "${OUTDIR}"
-if [ ! -d "${OUTDIR}/busybox" ]
-then
-git clone git://busybox.net/busybox.git
+if [ ! -d "${OUTDIR}/busybox" ]; then
+    git clone git://busybox.net/busybox.git
     cd busybox
     git checkout ${BUSYBOX_VERSION}
     # TODO:  Configure busybox
