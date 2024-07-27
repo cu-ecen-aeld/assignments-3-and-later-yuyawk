@@ -110,6 +110,7 @@ cp "${FINDER_APP_DIR}/finder.sh" "${OUTDIR}/rootfs/home/finder-app"
 cp "${FINDER_APP_DIR}/finder-test.sh" "${OUTDIR}/rootfs/home/finder-app"
 cp "${FINDER_APP_DIR}/writer" "${OUTDIR}/rootfs/home/finder-app"
 cp -Lr "${FINDER_APP_DIR}/conf" "${OUTDIR}/rootfs/home"
+cp -Lr "${FINDER_APP_DIR}/conf" "${OUTDIR}/rootfs/home/finder-app"
 
 # Chown the root directory
 sudo chown -R root:root "${OUTDIR}/rootfs"
