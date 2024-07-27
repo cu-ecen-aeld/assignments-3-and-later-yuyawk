@@ -92,7 +92,9 @@ cp "${CROSS_COMPILE_SYSROOT}/lib64/libm.so.6" "${OUTDIR}/rootfs/lib64"
 cp "${CROSS_COMPILE_SYSROOT}/lib64/libresolv.so.2" "${OUTDIR}/rootfs/lib64"
 cp "${CROSS_COMPILE_SYSROOT}/lib64/libc.so.6" "${OUTDIR}/rootfs/lib64"
 
-# TODO: Make device nodes
+# Make device nodes
+sudo mknod -m 0666 "${OUTDIR}/rootfs/dev/null" c 1 3
+sudo mknod -m 0666 "${OUTDIR}/rootfs/dev/console" c 5 1
 
 # TODO: Clean and build the writer utility
 
