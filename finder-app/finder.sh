@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # Searches for a string within the files inside a directory.
 #
@@ -6,7 +6,7 @@
 #   $1: Path to a directory on the filesystem.
 #   $2: Text string which will be searched within these files.
 
-set -euo pipefail
+set -eu
 
 main() {
   if [ "$#" -ne 2 ]; then
