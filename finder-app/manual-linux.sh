@@ -20,13 +20,13 @@ if [ $# -lt 1 ]
 then
 	echo "Using default directory ${OUTDIR} for output"
 else
-	OUTDIR=$1
+	OUTDIR="$(realpath "$1")"
 	echo "Using passed directory ${OUTDIR} for output"
 fi
 
 mkdir -p "${OUTDIR}"
 
-cd "$OUTDIR"
+cd "${OUTDIR}"
 if [ ! -d "${OUTDIR}/linux-stable" ]; then
     #Clone only if the repository does not exist.
 	echo "CLONING GIT LINUX STABLE VERSION ${KERNEL_VERSION} IN ${OUTDIR}"
