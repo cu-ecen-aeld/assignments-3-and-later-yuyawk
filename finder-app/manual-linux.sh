@@ -96,7 +96,11 @@ cp "${CROSS_COMPILE_SYSROOT}/lib64/libc.so.6" "${OUTDIR}/rootfs/lib64"
 sudo mknod -m 0666 "${OUTDIR}/rootfs/dev/null" c 1 3
 sudo mknod -m 0666 "${OUTDIR}/rootfs/dev/console" c 5 1
 
-# TODO: Clean and build the writer utility
+# Clean and build the writer utility
+pushd "${FINDER_APP_DIR}"
+make clean
+make "CROSS_COMPILE=${CROSS_COMPILE}"
+popd
 
 # TODO: Copy the finder related scripts and executables to the /home directory
 # on the target rootfs
