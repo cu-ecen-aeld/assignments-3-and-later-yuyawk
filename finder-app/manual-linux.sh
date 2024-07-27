@@ -70,12 +70,16 @@ if [ ! -d "${OUTDIR}/busybox" ]; then
     git clone git://busybox.net/busybox.git
     cd busybox
     git checkout ${BUSYBOX_VERSION}
-    # TODO:  Configure busybox
+    # Configure busybox
+    make distclean
+    make defconfig
 else
     cd busybox
 fi
 
-# TODO: Make and install busybox
+# Make and install busybox
+make "ARCH=${ARCH}" "CROSS_COMPILE=${CROSS_COMPILE}"
+make "CONFIG_PREFIX=${OUTDIR}/rootfs" "ARCH=${ARCH}" "CROSS_COMPILE=${CROSS_COMPILE}" install
 
 echo "Library dependencies"
 ${CROSS_COMPILE}readelf -a bin/busybox | grep "program interpreter"
