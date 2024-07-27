@@ -33,6 +33,7 @@ if [ ! -d "${OUTDIR}/linux-stable" ]; then
     #Clone only if the repository does not exist.
 	echo "CLONING GIT LINUX STABLE VERSION ${KERNEL_VERSION} IN ${OUTDIR}"
 	git clone "${KERNEL_REPO}" --depth 1 --single-branch --branch "${KERNEL_VERSION}"
+    # yuyawk: Workaround for ODR violation
     sed -i -e 's/^YYLTYPE yylloc;$/extern YYLTYPE yylloc;/' linux-stable/scripts/dtc/dtc-lexer.l
 fi
 if [ ! -e "${OUTDIR}/linux-stable/arch/${ARCH}/boot/Image" ]; then
