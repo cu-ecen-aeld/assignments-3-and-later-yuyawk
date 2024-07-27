@@ -102,8 +102,12 @@ make clean
 make "CROSS_COMPILE=${CROSS_COMPILE}"
 popd
 
-# TODO: Copy the finder related scripts and executables to the /home directory
+# Copy the finder related scripts and executables to the /home directory
 # on the target rootfs
+cp "${FINDER_APP_DIR}/finder.sh" "${OUTDIR}/rootfs/home"
+cp "${FINDER_APP_DIR}/finder-test.sh" "${OUTDIR}/rootfs/home"
+cp -Lr "${FINDER_APP_DIR}/conf" "${OUTDIR}/rootfs/home"
+cp "${FINDER_APP_DIR}/writer" "${OUTDIR}/rootfs/home"
 
 # TODO: Chown the root directory
 
