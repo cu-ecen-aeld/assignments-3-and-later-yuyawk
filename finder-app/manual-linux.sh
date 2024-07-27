@@ -24,7 +24,10 @@ else
 	echo "Using passed directory ${OUTDIR} for output"
 fi
 
-mkdir -p "${OUTDIR}"
+if ! mkdir -p "${OUTDIR}"; then
+    echo "ERROR: Failed to create ${OUTDIR}" >&2
+    exit 1
+fi
 
 cd "${OUTDIR}"
 if [ ! -d "${OUTDIR}/linux-stable" ]; then
