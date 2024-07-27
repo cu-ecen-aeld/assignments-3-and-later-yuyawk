@@ -55,7 +55,7 @@ echo "Creating the staging directory for the root filesystem"
 cd "${OUTDIR}"
 if [ -d "${OUTDIR}/rootfs" ]; then
 	echo "Deleting rootfs directory at ${OUTDIR}/rootfs and starting over"
-    sudo rm  -rf "${OUTDIR}/rootfs"
+    rm -rf "${OUTDIR}/rootfs" || sudo rm -rf "${OUTDIR}/rootfs"
 fi
 
 # Create necessary base directories
