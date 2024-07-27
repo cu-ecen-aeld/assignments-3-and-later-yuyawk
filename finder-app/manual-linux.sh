@@ -1,14 +1,11 @@
 #!/bin/bash
 # Script outline to install and build kernel.
 # Author: Siddhant Jajoo.
-#
-# Args:
-#   $1: The location on the filesystem where the output files should be placed.
-#       Optional. Defaults to "/tmp/aeld".
 
-set -euo pipefail
+set -e
+set -u
 
-OUTDIR="${1:-/tmp/aeld}"
+OUTDIR=/tmp/aeld
 KERNEL_REPO=git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
 KERNEL_VERSION=v5.1.10
 BUSYBOX_VERSION=1_33_1
