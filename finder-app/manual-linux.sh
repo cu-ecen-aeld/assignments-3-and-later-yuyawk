@@ -109,6 +109,7 @@ cp "${FINDER_APP_DIR}/finder-test.sh" "${OUTDIR}/rootfs/home"
 cp -Lr "${FINDER_APP_DIR}/conf" "${OUTDIR}/rootfs/home"
 cp "${FINDER_APP_DIR}/writer" "${OUTDIR}/rootfs/home"
 
-# TODO: Chown the root directory
+# Chown the root directory
+sudo chown -R root:root "${OUTDIR}/rootfs"
 
 # TODO: Create initramfs.cpio.gz
