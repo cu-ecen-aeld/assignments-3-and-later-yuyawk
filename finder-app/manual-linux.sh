@@ -1,9 +1,12 @@
 #!/bin/bash
 # Script outline to install and build kernel.
 # Author: Siddhant Jajoo.
+#
+# Args:
+#   $1: The location on the filesystem where the output files should be placed.
+#       Optional. Defaults to "/tmp/aeld".
 
-set -e
-set -u
+set -euo pipefail
 
 OUTDIR=/tmp/aeld
 KERNEL_REPO=git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
