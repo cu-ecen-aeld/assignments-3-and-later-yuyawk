@@ -166,7 +166,7 @@ const char *const textPath = "/var/tmp/aesdsocketdata";
 /// @return The return value for @c main().
 /// @pre @c vals is not @c NULL.
 /// @post If it exits on error, @c syslog describing the error is called.
-static int RunMain(bool use_fork, struct ValuesToBeCleanedUp *const vals)
+static int RunMain(const bool use_fork, struct ValuesToBeCleanedUp *const vals)
 {
     assert(vals != NULL);
     const int ret_error = -1;
