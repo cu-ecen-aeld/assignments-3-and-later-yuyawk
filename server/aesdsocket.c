@@ -11,7 +11,7 @@
 #include <fcntl.h>
 #include <string.h>
 #include <arpa/inet.h>
-#include <stdio.h>
+#include <stdlib.h>
 
 volatile sig_atomic_t continue_receiving = 1;
 
@@ -161,11 +161,12 @@ struct ValuesToBeCleanedUp
 const char *const textPath = "/var/tmp/aesdsocketdata";
 
 /// @brief Implementation of @c main() without set-up or clean-up.
+/// @param use_fork Whether to use @c fork().
 /// @param vals Pointer to values each of which needs a clean-up after executing this function.
 /// @return The return value for @c main().
 /// @pre @c vals is not @c NULL.
 /// @post If it exits on error, @c syslog describing the error is called.
-static int RunMain(struct ValuesToBeCleanedUp *const vals)
+static int RunMain(bool use_fork, struct ValuesToBeCleanedUp *const vals)
 {
     assert(vals != NULL);
     const int ret_error = -1;
@@ -202,7 +203,20 @@ static int RunMain(struct ValuesToBeCleanedUp *const vals)
         return ret_error;
     }
 
-    // TODO: fork here
+    if (use_fork)
+    {
+        pid_t pid = fork();
+        if (pid == -1)
+        {
+            syslog(LOG_ERR, "Failed to bind, error: %s", strerror(errno));
+            return ret_error;
+        }
+        if (0 < pid)
+        {
+            // Parent process exits immediately
+            exit(EXIT_SUCCESS);
+        }
+    }
 
     if (listen(vals->server_sockfd, 16) == -1)
     {
@@ -289,14 +303,19 @@ static int RunMain(struct ValuesToBeCleanedUp *const vals)
     return 0;
 }
 
-int main()
+int main(const int argc, const char *const argv[])
 {
     struct ValuesToBeCleanedUp vals;
     vals.client_sockfd = -1;
     vals.server_sockfd = -1;
     vals.textfd = -1;
+    bool use_fork = false;
+    if ((1 < argc) && (strcmp(argv[1], "-d") == 0))
+    {
+        use_fork = true;
+    }
 
-    int return_val = RunMain(&vals);
+    int return_val = RunMain(use_fork, &vals);
 
     if (vals.textfd != -1)
     {
