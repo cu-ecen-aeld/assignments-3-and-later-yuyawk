@@ -226,7 +226,7 @@ static int RunMain(struct ValuesToBeCleanedUp *const vals)
             int err = errno;
             if (err == EAGAIN || err == EWOULDBLOCK)
             {
-                // The message hasn't arrived yet.
+                // The request hasn't arrived yet.
                 continue;
             }
             syslog(LOG_ERR, "Failed to accept, error: %s", strerror(err));
