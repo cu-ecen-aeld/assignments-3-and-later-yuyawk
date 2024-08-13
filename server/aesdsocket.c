@@ -146,7 +146,7 @@ static int SendAllFromFile(const int sockfd, const char *const text_path)
     return ret;
 }
 
-/// @brief stores the values each of which needs a dedicated clean-up after
+/// @brief stores the values each of which needs a dedicated clean-up after execution.
 struct ValuesToBeCleanedUp
 {
     /// @brief Socket file descriptor for server.
