@@ -55,7 +55,6 @@ static int TransferFromFdToFd(const int fd_from, const int fd_to)
             if (err == EAGAIN || err == EWOULDBLOCK)
             {
                 // Case where there's no message arrived.
-
                 if (stream_started)
                 {
                     // Reached EOF
@@ -67,10 +66,12 @@ static int TransferFromFdToFd(const int fd_from, const int fd_to)
                     continue;
                 }
             }
-
-            // Case where there's a non-trivial error.
-            syslog(LOG_ERR, "Failed to read the data, error: %s", strerror(err));
-            return err;
+            else
+            {
+                // Case where there's a non-trivial error.
+                syslog(LOG_ERR, "Failed to read the data, error: %s", strerror(err));
+                return err;
+            }
         }
         if (readsize == 0)
         {
@@ -89,8 +90,15 @@ static int TransferFromFdToFd(const int fd_from, const int fd_to)
             if (written == -1)
             {
                 int err = errno;
-                syslog(LOG_ERR, "Failed to write the data, error: %s", strerror(err));
-                return err;
+                if (err == EAGAIN || err == EWOULDBLOCK)
+                {
+                    continue;
+                }
+                else
+                {
+                    syslog(LOG_ERR, "Failed to write the data, error: %s", strerror(err));
+                    return err;
+                }
             }
             write_remaining -= (size_t)written;
         }
