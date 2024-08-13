@@ -81,7 +81,7 @@ static int TransferFromFdToFd(const int fd_from, const int fd_to)
 
         stream_started = true;
 
-        // Write the received data into the file, addressing partial write.
+        // Write the received data into the file, preventing partial write.
         size_t write_remaining = (size_t)readsize;
         while (0 < write_remaining)
         {
