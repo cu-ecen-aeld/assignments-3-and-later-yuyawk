@@ -219,7 +219,7 @@ static int RunMain(struct ValuesToBeCleanedUp *const vals)
             syslog(LOG_ERR, "Failed to accept, error: %s", strerror(err));
             return ret_error;
         }
-        // TODO: is it needed to set client flags?
+
         int client_flags = fcntl(vals->client_sockfd, F_GETFL, 0);
         if (client_flags == -1)
         {
