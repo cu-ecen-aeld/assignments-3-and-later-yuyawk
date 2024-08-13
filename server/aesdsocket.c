@@ -25,6 +25,13 @@ static void SignalHandler(int signo)
 }
 
 /// @brief Read stream from @c fd_from and write it into @c fd_to.
+/// @details The assignment 5 instruction says
+/// > You may assume the length of the packet will be shorter than the
+/// > available heap size.  In other words, as long as you handle malloc()
+/// > associated failures with error messages you may discard associated
+/// > over-length packets.
+/// However, in order to familiarize myself with socket programming, I attempt
+/// to prevent partial read / write.
 /// @param fd_from File descriptor to read stream from.
 /// @param fd_to File descriptor to write stream into.
 /// @return 0 if there's no error, the number of errno otherwise.
@@ -47,6 +54,8 @@ static int TransferFromFdToFd(const int fd_from, const int fd_to)
             int err = errno;
             if (err == EAGAIN || err == EWOULDBLOCK)
             {
+                // Case where there's no message arrived.
+
                 if (stream_started)
                 {
                     // Reached EOF
@@ -58,6 +67,8 @@ static int TransferFromFdToFd(const int fd_from, const int fd_to)
                     continue;
                 }
             }
+
+            // Case where there's a non-trivial error.
             syslog(LOG_ERR, "Failed to read the data, error: %s", strerror(err));
             return err;
         }
@@ -68,6 +79,8 @@ static int TransferFromFdToFd(const int fd_from, const int fd_to)
         }
 
         stream_started = true;
+
+        // Write the received data into the file, addressing partial write.
         size_t write_remaining = (size_t)readsize;
         while (0 < write_remaining)
         {
@@ -102,7 +115,7 @@ static int RecvAllToFile(const int sockfd, const int textfd)
 /// @param sockfd File descriptor for socket.
 /// @param text_path Path of the text.
 /// @return 0 if there's no error, the number of errno otherwise.
-/// @pre @c sockfd is non-negative.
+/// @pre @c sockfd is non-negative, and for non-blocking I/O.
 /// @pre @c text_path is not @c NULL.
 /// @post On success, the content of the file is sent.
 /// @post On error, @c syslog is invoked with an appropriate message.
